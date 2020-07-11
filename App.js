@@ -11,8 +11,9 @@ import FavoritesContainer from './src/components/favorites/FavoritesContainer'
 import { darkTheme as defaultTheme, lightTheme, darkTheme } from './src/constants/colors'
 
 export default function App() {
-  const [ mainVisible, setMainVisible ] = useState(true)
+  const [mainVisible, setMainVisible] = useState(true)
   const [appTheme, setAppTheme] = useState(defaultTheme)
+  const [amount, setAmount] = useState('')
   const updateTheme = () => {
     appTheme.name === 'darkTheme' ? setAppTheme(lightTheme) : setAppTheme(darkTheme)
   }
@@ -24,33 +25,33 @@ export default function App() {
 
       {
         mainVisible ?
-        (
-          <Fragment>
-            <TopContainer appTheme={appTheme} />
-            <CurrenciesContainer appTheme={appTheme} changeScreen={setMainVisible} />
-            <BottomContainer appTheme={appTheme} updateTheme={updateTheme} />
-          </Fragment>
-        )
-        :
-        (
-          <Fragment>
-            <FavoritesSearchbar appTheme={appTheme} changeScreen={setMainVisible} />
-            <FavoritesContainer appTheme={appTheme} />
-          </Fragment>
-        )
+          (
+            <Fragment>
+              <TopContainer amount={amount} setAmount={setAmount} appTheme={appTheme} />
+              <CurrenciesContainer amount={amount} appTheme={appTheme} changeScreen={setMainVisible} />
+              <BottomContainer appTheme={appTheme} updateTheme={updateTheme} />
+            </Fragment>
+          )
+          :
+          (
+            <Fragment>
+              <FavoritesSearchbar appTheme={appTheme} changeScreen={setMainVisible} />
+              <FavoritesContainer appTheme={appTheme} />
+            </Fragment>
+          )
       }
-      
+
     </PaperProvider>
   );
 }
 
 
 const getStyle = (theme, component) => {
-  switch(component) {
+  switch (component) {
     case 'statusUnderlay':
-      return({
+      return ({
         height: 28,
-        backgroundColor: theme.secondary,    
+        backgroundColor: theme.secondary,
       })
   }
 }

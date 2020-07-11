@@ -6,15 +6,15 @@ import CurrencyCard from './CurrencyCard';
 // lightTheme or darkTheme
 import { darkTheme as theme } from '../../constants/colors'
 
-const CurrenciesContainer = ({ appTheme, changeScreen }) => (
+const CurrenciesContainer = ({ appTheme, changeScreen, amount }) => (
   <>
     <View style={getStyle(appTheme, 'currenciesContainer')}>
       <Button onPress={() => changeScreen(false)} style={getStyle(appTheme, 'button')}>
         <Text style={getStyle(appTheme, 'buttonText')}>Agregar nueva moneda</Text>
       </Button>
-      <CurrencyCard appTheme={appTheme} name="ARS" flag={"ars"} />
-      <CurrencyCard appTheme={appTheme} name="EUR" flag={"eur"} />
-      <CurrencyCard appTheme={appTheme} name="JPY" flag={"jpy"} />
+      <CurrencyCard amount={amount} appTheme={appTheme} name="ARS" flag={"ars"} />
+      <CurrencyCard amount={amount} appTheme={appTheme} name="EUR" flag={"eur"} />
+      <CurrencyCard amount={amount} appTheme={appTheme} name="JPY" flag={"jpy"} />
     </View>
   </>
 )
