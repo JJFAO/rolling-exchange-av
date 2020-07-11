@@ -31,5 +31,5 @@ const exchange  = {
 }
 
 export const getExchange = (currency, amount) => (
-    exchange[currency](amount)
+    exchange[currency](amount).toFixed(2)
 );

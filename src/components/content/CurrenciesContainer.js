@@ -5,16 +5,19 @@ import CurrencyCard from './CurrencyCard';
 
 // lightTheme or darkTheme
 import { darkTheme as theme } from '../../constants/colors'
+import currencies from '../../constants/currencies';
 
-const CurrenciesContainer = ({ appTheme, changeScreen, amount }) => (
+const CurrenciesContainer = ({ favoriteCurrencies, appTheme, changeScreen, amount }) => (
   <>
     <View style={getStyle(appTheme, 'currenciesContainer')}>
       <Button onPress={() => changeScreen(false)} style={getStyle(appTheme, 'button')}>
         <Text style={getStyle(appTheme, 'buttonText')}>Agregar nueva moneda</Text>
       </Button>
-      <CurrencyCard amount={amount} appTheme={appTheme} name="ARS" flag={"ars"} />
-      <CurrencyCard amount={amount} appTheme={appTheme} name="EUR" flag={"eur"} />
-      <CurrencyCard amount={amount} appTheme={appTheme} name="JPY" flag={"jpy"} />
+      {
+        currencies.map(fav =>
+          <CurrencyCard key={fav.name} amount={amount} appTheme={appTheme} name={fav.name} flag={fav.flag} />
+        )
+      }
     </View>
   </>
 )
