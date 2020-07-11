@@ -6,9 +6,9 @@ import { darkTheme as theme } from '../../constants/colors'
 
 import flags from '../../constants/flags'
 
-const FavoriteCard = ({ name, flag }) => {
+const FavoriteCard = ({ name, flag, appTheme }) => {
   let url = ''
-  switch(flag) {
+  switch (flag) {
     case 'ars':
       url = flags.ars
       break
@@ -23,15 +23,34 @@ const FavoriteCard = ({ name, flag }) => {
       break
   }
 
-  return(
-    <View style={styles.card}>
+  return (
+    <View style={getStyle(appTheme, 'card')}>
       <Image
         source={url}
         style={{ width: 50, height: 50, marginRight: 10 }}
       />
-      <Text style={styles.text}>{name}</Text>
+      <Text style={getStyle(appTheme, 'text')}>{name}</Text>
     </View>
   )
+}
+
+const getStyle = (theme, component) => {
+  switch (component) {
+    case 'card':
+      return ({
+        backgroundColor: theme.container,
+        width: '90%',
+        padding: 25,
+        margin: 10,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+      })
+    case 'text':
+      return ({
+        color: theme.textPrimary,
+      })
+  }
 }
 
 const styles = StyleSheet.create({

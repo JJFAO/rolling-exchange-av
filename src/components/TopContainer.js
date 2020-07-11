@@ -5,21 +5,21 @@ import { TextInput } from 'react-native-paper'
 // lightTheme or darkTheme
 import { darkTheme as theme } from '../constants/colors'
 
-const TopContainer = () => {
-  const [ input, setInput ] = useState('')
-  const [ selectedCurrency ] = useState({name: 'USD', flag: 'usd'})
+const TopContainer = ({appTheme}) => {
+  const [input, setInput] = useState('')
+  const [selectedCurrency] = useState({ name: 'USD', flag: 'usd' })
 
-  return(
-    <View style={styles.topContainer}>
-      <View style={styles.selectedCurrency}>
+  return (
+    <View style={getStyle(appTheme, 'topContainer')}>
+      <View style={getStyle(appTheme, 'selectedCurrency')}>
         <Image
           source={require('../assets/flags/usd.png')}
           style={{ width: 50, height: 50 }}
         />
-        <Text style={styles.selectedCurrencyName}>{selectedCurrency.name}</Text>
+        <Text style={getStyle(appTheme, 'selectedCurrencyName')}>{selectedCurrency.name}</Text>
       </View>
       <TextInput
-        style={styles.input}
+        style={getStyle(appTheme, 'input')}
         keyboardType='numeric'
         label="¿Cuanto queres convertir?"
         value={input}
@@ -27,6 +27,40 @@ const TopContainer = () => {
       />
     </View>
   )
+}
+
+const getStyle = (theme, component) => {
+  switch (component) {
+    case 'topContainer':
+      return ({
+        flex: 1.6,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        width: '100%',
+        backgroundColor: theme.secondary,
+      })
+    case 'input':
+      return ({
+        width: '60%',
+        paddingBottom: 10,
+        height: 60
+      })
+    case 'selectedCurrency':
+      return ({
+        width: '20%',
+        paddingBottom: 10,
+        height: 60,
+        marginRight: 1,
+        alignItems: 'center',
+      })
+    case 'selectedCurrencyName':
+      return ({
+        color: theme.link,
+        textAlign: 'center',
+        marginTop: 5,
+      })
+  }
 }
 
 const styles = StyleSheet.create({
@@ -56,5 +90,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
   }
 })
+
 
 export default TopContainer
