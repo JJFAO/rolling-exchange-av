@@ -24,68 +24,32 @@ export const getCurrencyName = (currency) => {
   }
 }
 
-export const getExchange = (fromCurrency, currency, amount) => {
-  let exchange
-  switch (fromCurrency) {
-    case 'ars':
-      switch (toCurrency) {
-        case 'ars':
-          exchange = amount * 1
-          return exchange.toFixed(2)
-        case 'usd':
-          exchange = amount * 0.014
-          return exchange.toFixed(2)
-        case 'eur':
-          exchange = amount * 0.012
-          return exchange.toFixed(2)
-        case 'jpy':
-          exchange = amount * 1.48
-          return exchange.toFixed(2)
-      }
-    case 'usd':
-      switch (toCurrency) {
-        case 'ars':
-          exchange = amount * 70.87 * 1.30
-          return exchange.toFixed(2)
-        case 'usd':
-          exchange = amount * 1
-          return exchange.toFixed(2)
-        case 'eur':
-          exchange = amount * 0.89
-          return exchange.toFixed(2)
-        case 'jpy':
-          exchange = amount * 107.04
-          return exchange.toFixed(2)
-      }
-    case 'eur':
-      switch (toCurrency) {
-        case 'ars':
-          exchange = amount * 83.74
-          return exchange.toFixed(2)
-        case 'usd':
-          exchange = amount * 1.17
-          return exchange.toFixed(2)
-        case 'eur':
-          exchange = amount * 1
-          return exchange.toFixed(2)
-        case 'jpy':
-          exchange = amount * 123.70
-          return exchange.toFixed(2)
-      }
-    case 'jpy':
-      switch (toCurrency) {
-        case 'ars':
-          exchange = amount * 0.68
-          return exchange.toFixed(2)
-        case 'usd':
-          exchange = amount * 0.0094
-          return exchange.toFixed(2)
-        case 'eur':
-          exchange = amount * 0.0081
-          return exchange.toFixed(2)
-        case 'jpy':
-          exchange = amount * 1
-          return exchange.toFixed(2)
-      }
-  }
+const exchange = {
+  ars: {
+    ars: amount => amount * 1,
+    usd: amount => amount * 0.014,
+    eur: amount => amount * 0.012,
+    jpy: amount => amount * 1.48,
+  },
+  usd: {
+    ars: amount => amount * 70.87 * 1.30,
+    usd: amount => amount * 1,
+    eur: amount => amount * 0.89,
+    jpy: amount => amount * 107.04,
+  },
+  eur: {
+    ars: amount => amount * 83.74,
+    usd: amount => amount * 1.17,
+    eur: amount => amount * 1,
+    jpy: amount => amount * 123.70,
+  },
+  jpy: {
+    ars: amount => amount * 0.68,
+    usd: amount => amount * 0.0094,
+    eur: amount => amount * 0.0081,
+    jpy: amount => amount * 1,
+  },
 }
+export const getExchange = (fromCurrency, toCurrency, amount) => (
+  exchange[fromCurrency][toCurrency](amount).toFixed(2)
+);
