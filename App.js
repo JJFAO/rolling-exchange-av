@@ -49,6 +49,7 @@ export default function App() {
               amount={amount}
               setAmount={setAmount}
               fromCurrency={fromCurrency}
+              setFromCurrency={setFromCurrency}
             />
             <CurrenciesContainer
               appTheme={appTheme}

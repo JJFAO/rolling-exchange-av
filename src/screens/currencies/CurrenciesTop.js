@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 
-const CurrenciesTop = ({ appTheme, amount, setAmount, fromCurrency }) => {
+const CurrenciesTop = ({ appTheme, amount, setAmount, fromCurrency, setFromCurrency }) => {
   const [showSelection, setShowSelection] = useState(false)
   const requiredFlag = {
     ars: require('../../assets/flags/ars.png'),
@@ -15,6 +15,11 @@ const CurrenciesTop = ({ appTheme, amount, setAmount, fromCurrency }) => {
   }
 
   const flags = ['usd', 'ars', 'eur', 'jpy']
+
+  const onHandleSelectCurrency = (flag) => {
+    setFromCurrency(flag)
+    setShowSelection(!showSelection)
+  }
 
   return (
     <>
@@ -49,10 +54,12 @@ const CurrenciesTop = ({ appTheme, amount, setAmount, fromCurrency }) => {
           </Text>
           <View style={getStyle(appTheme, 'selectionCurrencies')}>
             {flags.map(f =>
-              <View style={getStyle(appTheme, 'selectionCurrencyButton')}>
-                <Image source={requiredFlag[f]} style={{ width: 50, height: 50 }} />
-                <Text style={getStyle(appTheme, 'fromCurrencyName')}>{f.toUpperCase()}</Text>
-              </View>
+              <TouchableOpacity style={getStyle(appTheme, 'fromCurrencyButton')} onPress={() => onHandleSelectCurrency(f)}>
+                <View style={getStyle(appTheme, 'selectionCurrencyButton')}>
+                  <Image source={requiredFlag[f]} style={{ width: 50, height: 50 }} />
+                  <Text style={getStyle(appTheme, 'fromCurrencyName')}>{f.toUpperCase()}</Text>
+                </View>
+              </TouchableOpacity>
             )}
           </View>
         </View>
