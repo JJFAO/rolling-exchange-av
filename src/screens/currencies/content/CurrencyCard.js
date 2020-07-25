@@ -4,7 +4,7 @@ import { View, Text, Image } from 'react-native'
 import flags from '../../../constants/flags'
 import { getCurrencySymbol, getCurrencyName, getExchange } from '../../../utils/currencyFunctions'
 
-const CurrencyCard = ({ name, flag, appTheme, amount }) => {
+const CurrencyCard = ({ name, flag, appTheme, amount, fromCurrency }) => {
   let url = ''
   switch(flag) {
     case 'ars':
@@ -34,7 +34,7 @@ const CurrencyCard = ({ name, flag, appTheme, amount }) => {
         {
           amount !== '' ?
             <>
-              <Text style={getStyle(appTheme, 'text')}>{getCurrencySymbol(flag)} {getExchange(flag, amount)}</Text>
+              <Text style={getStyle(appTheme, 'text')}>{getCurrencySymbol(flag)} {getExchange(fromCurrency, flag, amount)}</Text>
               <Text style={getStyle(appTheme, 'text')}>{getCurrencyName(flag)}</Text>
             </>
           :
