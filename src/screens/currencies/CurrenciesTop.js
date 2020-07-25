@@ -1,18 +1,23 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View, Text, Image } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 
-const CurrenciesTop = ({ appTheme, amount, setAmount }) => {
-  const [ selectedCurrency ] = useState({name: 'USD', flag: 'usd'})
+const CurrenciesTop = ({ appTheme, amount, setAmount, fromCurrency }) => {
+  const requiredFlag = {
+    ars: require('../../assets/flags/ars.png'),
+    usd: require('../../assets/flags/usd.png'),
+    eur: require('../../assets/flags/eur.png'),
+    jpy: require('../../assets/flags/jpy.png'),
+  }
 
   return(
     <View style={getStyle(appTheme, 'topContainer')}>
-      <View style={getStyle(appTheme, 'selectedCurrency')}>
+      <View style={getStyle(appTheme, 'fromCurrency')}>
         <Image
-          source={require('../../assets/flags/usd.png')}
+          source={requiredFlag[fromCurrency]}
           style={{ width: 50, height: 50 }}
         />
-        <Text style={getStyle(appTheme, 'selectedCurrencyName')}>{selectedCurrency.name}</Text>
+        <Text style={getStyle(appTheme, 'fromCurrencyName')}>{fromCurrency.toUpperCase()}</Text>
       </View>
       <TextInput
         style={getStyle(appTheme, 'input')}
@@ -48,7 +53,7 @@ const getStyle = (theme, component) => {
         paddingBottom: 10,
         height: 60
       })
-    case 'selectedCurrency':
+    case 'fromCurrency':
       return({
         width: '20%',
         paddingBottom: 10,
@@ -56,7 +61,7 @@ const getStyle = (theme, component) => {
         marginRight: 1,
         alignItems: 'center',
       })
-    case 'selectedCurrencyName':
+    case 'fromCurrencyName':
       return({
         color: theme.link,
         textAlign: 'center',
