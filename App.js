@@ -11,6 +11,8 @@ import currencies, { initialRates } from './src/constants/currencies'
 import { darkTheme } from './src/constants/colors'
 import { lightTheme } from './src/constants/colors'
 import { darkTheme as defaultTheme } from './src/constants/colors'
+import moment from 'moment';
+moment.locale()
 
 const windowHeigh = Dimensions.get('screen').height
 
@@ -31,8 +33,7 @@ export default function App() {
     fetch(`https://api.exchangerate.host/latest?base=${fromCurrency}`)
     .then(res => res.json())
     .then(responseJson => {
-      setLastRates(responseJson)
-      console.log("updateRates -> responseJson", responseJson)
+      setLastRates({ ...responseJson, hour: moment().format('H:mm:ss')})
     })
     .catch(error => {
       console.log(error)

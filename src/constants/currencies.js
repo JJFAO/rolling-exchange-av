@@ -20,6 +20,7 @@ const currencies = [
 const initialRates = {
   "base": "USD",
   "date": "2020-07-24",
+  "hour": "16:07",
   "rates": {
     "AED": 3.6732,
     "AFN": 76.800009,
