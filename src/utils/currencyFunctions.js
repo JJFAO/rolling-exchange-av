@@ -16,7 +16,7 @@ export const getCurrencyName = (currency) => {
     case 'ars':
       return 'pesos argentinos'
     case 'usd':
-      return 'dolar estadounidense'
+      return 'dolares estadounidense'
     case 'eur':
       return 'euros'
     case 'jpy':
