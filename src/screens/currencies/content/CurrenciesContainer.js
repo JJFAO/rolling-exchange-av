@@ -3,7 +3,7 @@ import { View, Text, ScrollView } from 'react-native'
 import { Button } from 'react-native-paper'
 import CurrencyCard from './CurrencyCard';
 
-const CurrenciesContainer = ({ appTheme, changeScreen, fromCurrency, amount, allCurrencies }) => {
+const CurrenciesContainer = ({ appTheme, changeScreen, fromCurrency, amount, allCurrencies, lastRates }) => {
   const styles = getStyle(appTheme)
 
   return(
@@ -21,7 +21,8 @@ const CurrenciesContainer = ({ appTheme, changeScreen, fromCurrency, amount, all
               amount={amount}
               name={fav.name}
               flag={fav.flag}
-            />
+              lastRates={lastRates}
+              />
           )
         }
       </ScrollView>

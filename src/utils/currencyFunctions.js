@@ -26,31 +26,31 @@ export const getCurrencyName = (currency) => {
 
 const exchange = {
   ars: {
-    ars: amount => amount * 1,
-    usd: amount => amount * 0.014,
-    eur: amount => amount * 0.012,
-    jpy: amount => amount * 1.48,
+    ars: (amount, rate) => amount * 1,
+    usd: (amount, rate) => amount * rate,
+    eur: (amount, rate) => amount * rate,
+    jpy: (amount, rate) => amount * rate,
   },
   usd: {
-    ars: amount => amount * 70.87 * 1.30,
-    usd: amount => amount * 1,
-    eur: amount => amount * 0.89,
-    jpy: amount => amount * 107.04,
+    ars: (amount, rate) => amount * rate,
+    usd: (amount, rate) => amount * 1,
+    eur: (amount, rate) => amount * rate,
+    jpy: (amount, rate) => amount * rate,
   },
   eur: {
-    ars: amount => amount * 83.74,
-    usd: amount => amount * 1.17,
-    eur: amount => amount * 1,
-    jpy: amount => amount * 123.70,
+    ars: (amount, rate) => amount * rate,
+    usd: (amount, rate) => amount * rate,
+    eur: (amount, rate) => amount * 1,
+    jpy: (amount, rate) => amount * rate,
   },
   jpy: {
-    ars: amount => amount * 0.68,
-    usd: amount => amount * 0.0094,
-    eur: amount => amount * 0.0081,
-    jpy: amount => amount * 1,
+    ars: (amount, rate) => amount * rate,
+    usd: (amount, rate) => amount * rate,
+    eur: (amount, rate) => amount * rate,
+    jpy: (amount, rate) => amount * 1,
   },
 }
 
-export const getExchange = (fromCurrency, toCurrency, amount) => (
-  exchange[fromCurrency][toCurrency](amount).toFixed(2)
+export const getExchange = (fromCurrency, toCurrency, rate, amount) => (
+  exchange[fromCurrency][toCurrency](amount, rate).toFixed(2)
 )

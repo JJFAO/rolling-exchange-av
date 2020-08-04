@@ -73,6 +73,7 @@ export default function App() {
                 amount={amount}
                 changeScreen={setMainVisible}
                 allCurrencies={allCurrencies}
+                lastRates={lastRates}
               />
               <CurrenciesBottom
                 appTheme={appTheme}
