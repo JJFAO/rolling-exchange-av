@@ -119,7 +119,7 @@ const getStyle = theme => (
       padding: 5,
       // height: 60,
       marginRight: 1,
-      backgroundColor: theme.container,
+      backgroundColor: theme.opacity,
       alignItems: 'center',
     },
     fromCurrencyName: {

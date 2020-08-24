@@ -1,13 +1,13 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
-import { Button } from 'react-native-paper'
+import { Button, ActivityIndicator, Colors } from 'react-native-paper'
 import {
   useFonts,
   Karla_400Regular,
 } from "@expo-google-fonts/dev";
 
 import flags from '../../../constants/flags'
-import { getCurrencyName } from '../../../utils/currencyFunctions'
+import { getCurrencyNickname } from '../../../utils/currencyFunctions'
 
 const FavoriteCard = ({
   appTheme,
@@ -22,51 +22,35 @@ const FavoriteCard = ({
   });
   const styles = getStyle(appTheme)
 
-  let url = ''
-  switch(flag) {
-    case 'ars':
-      url = flags.ars
-      break
-    case 'eur':
-      url = flags.eur
-      break
-    case 'jpy':
-      url = flags.jpy
-      break
-    case 'usd':
-      url = flags.usd
-      break
-  }
+  const url = flags[flag]
 
   const onTouchStar = () => {
-    addFavoriteCurrency({name: name, flag: flag})
+    addFavoriteCurrency({ name: name, flag: flag })
     updateCurrency(name, isFavorite)
   }
 
-  return(
+  return (!fontsLoaded ? <ActivityIndicator animating={true} color={appTheme.link} /> : 
     <View style={styles.card}>
-
       <View style={styles.leftContainer}>
         <Image
           source={url}
           style={{ width: 50, height: 50, marginRight: 10 }}
         />
         <View>
-        <Text style={styles.text}>
-          {name}
-        </Text>
-        <Text style={styles.text}>{getCurrencyName(flag)}</Text>
+          <Text style={styles.text}>
+            {name}
+          </Text>
+          <Text style={styles.text}>{getCurrencyNickname(flag)}</Text>
         </View>
       </View>
-      <TouchableOpacity onPress={onTouchStar}>
 
-      <View style={styles.rightContainer}>
-        <Button
-          
-          icon={isFavorite ? 'star' : 'star-outline'}
-          color={appTheme.link}
-        />
-      </View>
+      <TouchableOpacity onPress={onTouchStar}>
+        <View style={styles.rightContainer}>
+          <Button
+            icon={isFavorite ? 'star' : 'star-outline'}
+            color={appTheme.link}
+          />
+        </View>
       </TouchableOpacity>
     </View>
   )

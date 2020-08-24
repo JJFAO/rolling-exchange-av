@@ -1,27 +1,13 @@
-export const getCurrencySymbol = (currency) => {
-  switch(currency) {
-    case 'ars':
-      return '$'
-    case 'usd':
-      return 'u$s'
-    case 'eur':
-      return '€'
-    case 'jpy':
-      return '¥'
-  }
+import { currencies } from "../constants/currencies"
+
+export const getCurrencySymbol = (flag) => {
+  const { symbol } = currencies.find((cur) => cur.flag === flag)
+  return symbol
 }
 
-export const getCurrencyName = (currency) => {
-  switch(currency) {
-    case 'ars':
-      return 'pesos argentinos'
-    case 'usd':
-      return 'dolares estadounidenses'
-    case 'eur':
-      return 'euros'
-    case 'jpy':
-      return 'yenes japoneses'
-  }
+export const getCurrencyNickname = (flag) => {
+  const { nickname } = currencies.find((cur) => cur.flag === flag)
+  return nickname
 }
 
 const exchange = {

@@ -6,35 +6,18 @@ import {
 } from "@expo-google-fonts/dev";
 
 import flags from '../../../constants/flags'
-import { getCurrencySymbol, getCurrencyName, getExchange } from '../../../utils/currencyFunctions'
+import { getCurrencySymbol, getCurrencyNickname, getExchange } from '../../../utils/currencyFunctions'
+import { ActivityIndicator } from 'react-native-paper';
 
 const CurrencyCard = ({ name, flag, appTheme, fromCurrency, amount, lastRates }) => {
   let [fontsLoaded] = useFonts({
     Karla_400Regular,
   });
   const styles = getStyle(appTheme)
-  let url = ''
-  let rate = 0
-  switch(flag) {
-    case 'ars':
-      url = flags.ars
-      rate = lastRates.rates.ARS
-      break
-    case 'eur':
-      url = flags.eur
-      rate = lastRates.rates.EUR
-      break
-    case 'jpy':
-      url = flags.jpy
-      rate = lastRates.rates.JPY
-      break
-    case 'usd':
-      url = flags.usd
-      rate = lastRates.rates.USD
-      break
-  }
+  const url = flags[flag]
+  const rate = lastRates.rates[name]
 
-  return(
+  return(!fontsLoaded ? <ActivityIndicator animating={true} color={appTheme.link} /> : 
     <View style={styles.card}>
       <View style={styles.leftContainer}>
         <Image
@@ -48,7 +31,7 @@ const CurrencyCard = ({ name, flag, appTheme, fromCurrency, amount, lastRates })
           amount !== '' ?
             <>
               <Text style={styles.text}>{getCurrencySymbol(flag)} {getExchange(fromCurrency, flag, rate, amount)}</Text>
-              <Text style={styles.text}>{getCurrencyName(flag)}</Text>
+              <Text style={styles.text}>{getCurrencyNickname(flag)}</Text>
             </>
           :
             null
