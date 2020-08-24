@@ -16,11 +16,11 @@ const FavoritesTop = ({ appTheme, changeScreen, searchCurrency }) => {
       <Button
         onPress={() => changeScreen(true)}
         color={appTheme.link}
-        icon="keyboard-backspace"
+        icon="arrow-left-circle"
       />
       <TextInput
         style={styles.input}
-        label="¿Que moneda estás buscando?"
+        label="¿Qué moneda estás buscando?"
         value={input}
         onChangeText={input => setInput(input)}
       />
@@ -36,7 +36,7 @@ const getStyle = theme => (
       justifyContent: 'center',
       flexDirection: 'row',
       width: '100%',
-      backgroundColor: theme.secondary,
+      backgroundColor: theme.primary,
     },
     input: {
       width: '60%',

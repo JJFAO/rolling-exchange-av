@@ -1,6 +1,9 @@
 import React from 'react'
-import { StyleSheet, View, ScrollView } from 'react-native'
+import { StyleSheet, View, ScrollView, ImageBackground } from 'react-native'
 import FavoriteCard from './FavoriteCard';
+
+const bgLight = require('../../../assets/descarga-light.jpg')
+const bgDark = require('../../../assets/descarga.jpg')
 
 const FavoritesContainer = ({
   appTheme,
@@ -9,11 +12,13 @@ const FavoritesContainer = ({
   updateCurrency
 }) => {
   const styles = getStyle(appTheme)
-  
-  return(
-    <View style={styles.favoritesContainer}>
+  const bgImage = appTheme.name === 'darkTheme' ? bgDark : bgLight
+
+  return (
+    <ImageBackground style={styles.image} source={bgImage}>
+      {/* <View style={styles.favoritesContainer}> */}
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', width: '100%' }}>
-        {allCurrencies.map(curr => 
+        {allCurrencies.map(curr =>
           <FavoriteCard
             key={curr.name}
             appTheme={appTheme}
@@ -25,7 +30,8 @@ const FavoritesContainer = ({
           />
         )}
       </ScrollView>
-    </View>
+      {/* </View> */}
+    </ImageBackground>
   )
 }
 
@@ -37,7 +43,12 @@ const getStyle = theme => (
       alignItems: 'center',
       justifyContent: 'center',
       width: '100%'
-    }
+    },
+    image: {
+      alignItems: 'center',
+      flex: 8,
+      justifyContent: "center"
+    },
   })
 )
 

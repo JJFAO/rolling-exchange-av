@@ -1,10 +1,17 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
+import {
+  useFonts,
+  Karla_400Regular,
+} from "@expo-google-fonts/dev";
 
 import flags from '../../../constants/flags'
 import { getCurrencySymbol, getCurrencyName, getExchange } from '../../../utils/currencyFunctions'
 
 const CurrencyCard = ({ name, flag, appTheme, fromCurrency, amount, lastRates }) => {
+  let [fontsLoaded] = useFonts({
+    Karla_400Regular,
+  });
   const styles = getStyle(appTheme)
   let url = ''
   let rate = 0
@@ -62,7 +69,10 @@ const getStyle = theme => (
       alignItems: 'center',
     },
     text: {
+      fontSize: 17,
       color: theme.textPrimary,
+      fontFamily: "Karla_400Regular",
+      textAlign: 'right',
     },
     leftContainer: {
       flex: 1,

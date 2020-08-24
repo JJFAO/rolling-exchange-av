@@ -13,7 +13,7 @@ import { currencies, initialRates } from './src/constants/currencies'
 import { darkTheme } from './src/constants/colors'
 import { lightTheme } from './src/constants/colors'
 
-const windowHeigh = Dimensions.get('screen').height
+const windowHeigh = Dimensions.get('window').height
 
 const THEME = '@theme'
 const FAV_CURRENCIES = '@favCurrencies'

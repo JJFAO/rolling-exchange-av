@@ -1,13 +1,17 @@
 import React from 'react'
-import { StyleSheet, View, Text, ScrollView } from 'react-native'
+import { StyleSheet, View, Text, ScrollView, ImageBackground } from 'react-native'
 import { Button } from 'react-native-paper'
 import CurrencyCard from './CurrencyCard';
 
+const bgLight = require('../../../assets/descarga-light.jpg')
+const bgDark = require('../../../assets/descarga.jpg')
+
 const CurrenciesContainer = ({ appTheme, changeScreen, fromCurrency, amount, allCurrencies, lastRates }) => {
   const styles = getStyle(appTheme)
+  const bgImage =  appTheme.name === 'darkTheme' ? bgDark : bgLight
 
   return(
-    <View style={styles.currenciesContainer}>
+      <ImageBackground style={styles.image} source={bgImage}>
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
         <Button onPress={() => changeScreen(false)} style={styles.button}>
           <Text style={styles.buttonText}>Agregar nueva moneda</Text>
@@ -26,7 +30,7 @@ const CurrenciesContainer = ({ appTheme, changeScreen, fromCurrency, amount, all
           )
         }
       </ScrollView>
-    </View>
+    </ImageBackground>
   )
 }
 
@@ -35,15 +39,19 @@ const getStyle = theme => (
   StyleSheet.create({
     currenciesContainer: {
       flex: 8,
-      backgroundColor: theme.primary,
+      // backgroundColor: require('../../../assets/descarga.jpg'),
       width: '100%',
     },
     button: {
-      backgroundColor: theme.primary,
+      backgroundColor: theme.opacity,
     },
     buttonText: {
       color: theme.link,
-    }
+    },
+    image: {
+      flex: 8,
+      justifyContent: "center"
+    },
   })
 )
 
