@@ -1,19 +1,17 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
+import { getCurrencyImage } from '../../utils/currencyFunctions'
+import { currencies } from '../../constants/currencies'
 
 const CurrenciesTop = ({ appTheme, fromCurrency, setFromCurrency, amount, setAmount, updateRates }) => {
-  const styles = getStyle(appTheme)
   const [showSelection, setShowSelection] = useState(false)
-  const requireFlag = {
-    ars: require('../../assets/flags/ars.png'),
-    usd: require('../../assets/flags/usd.png'),
-    eur: require('../../assets/flags/eur.png'),
-    jpy: require('../../assets/flags/jpy.png'),
-  }
+  const styles = getStyle(appTheme)
+
   const onHandleShowSelection = () => {
     setShowSelection(!showSelection)
   }
+  
   const onHandleSelectCurrency = currency => {
     setFromCurrency(currency)
     setShowSelection(!showSelection)
@@ -25,9 +23,9 @@ const CurrenciesTop = ({ appTheme, fromCurrency, setFromCurrency, amount, setAmo
       <View style={styles.topContainer}>
         <View style={styles.fromCurrency}>
           <TouchableOpacity style={styles.fromCurrencyButton} onPress={onHandleShowSelection}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image
-                source={requireFlag[fromCurrency]}
+                source={getCurrencyImage(fromCurrency)}
                 style={{ width: 40, height: 40 }}
               />
               {/* <Button icon={'swap-vertical-bold'} color={appTheme.link} style={{minWidth: 20}}></Button> */}
@@ -56,42 +54,19 @@ const CurrenciesTop = ({ appTheme, fromCurrency, setFromCurrency, amount, setAmo
         <View style={styles.selection}>
           <Text style={styles.selectionText}>Seleccioná una moneda</Text>
           <View style={styles.selectionCurrencies}>
-            <View style={styles.selectionCurrencyButton}>
-              <TouchableOpacity onPress={() => onHandleSelectCurrency('ars')}>
-                <Image
-                  source={requireFlag['ars']}
-                  style={{ width: 50, height: 50 }}
-                />
-                <Text style={styles.fromCurrencyName}>{'ars'.toUpperCase()}</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.selectionCurrencyButton}>
-              <TouchableOpacity onPress={() => onHandleSelectCurrency('usd')}>
-                <Image
-                  source={requireFlag['usd']}
-                  style={{ width: 50, height: 50 }}
-                />
-                <Text style={styles.fromCurrencyName}>{'usd'.toUpperCase()}</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.selectionCurrencyButton}>
-              <TouchableOpacity onPress={() => onHandleSelectCurrency('eur')}>
-                <Image
-                  source={requireFlag['eur']}
-                  style={{ width: 50, height: 50 }}
-                />
-                <Text style={styles.fromCurrencyName}>{'eur'.toUpperCase()}</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.selectionCurrencyButton}>
-              <TouchableOpacity onPress={() => onHandleSelectCurrency('jpy')}>
-                <Image
-                  source={requireFlag['jpy']}
-                  style={{ width: 50, height: 50 }}
-                />
-                <Text style={styles.fromCurrencyName}>{'jpy'.toUpperCase()}</Text>
-              </TouchableOpacity>
-            </View>
+            {
+              currencies.map((cur) => (
+                <View style={styles.selectionCurrencyButton} key={cur.name}>
+                  <TouchableOpacity onPress={() => onHandleSelectCurrency(cur.flag)}>
+                    <Image
+                      source={cur.image}
+                      style={{ width: 50, height: 50 }}
+                    />
+                    <Text style={styles.fromCurrencyName}>{cur.name}</Text>
+                  </TouchableOpacity>
+                </View>
+              ))
+            }
           </View>
         </View>
       }

@@ -14,7 +14,6 @@ const FavoriteCard = ({
   name,
   flag,
   isFavorite,
-  addFavoriteCurrency,
   updateCurrency,
 }) => {
   let [fontsLoaded] = useFonts({
@@ -25,7 +24,6 @@ const FavoriteCard = ({
   const url = flags[flag]
 
   const onTouchStar = () => {
-    addFavoriteCurrency({ name: name, flag: flag })
     updateCurrency(name, isFavorite)
   }
 

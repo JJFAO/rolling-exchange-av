@@ -3,24 +3,28 @@ const currencies = [
     name: 'ARS',
     flag: 'ars',
     nickname: 'pesos argentinos',
+    image: require('../assets/flags/ars.png'),
     symbol: '$'
   },
   {
     name: 'USD',
     flag: 'usd',
     nickname: 'dolares americanos',
+    image: require('../assets/flags/usd.png'),
     symbol: 'u$s'
   },
   {
     name: 'EUR',
     flag: 'eur',
     nickname: 'euros',
+    image: require('../assets/flags/eur.png'),
     symbol: '€'
   },
   {
     name: 'JPY',
     flag: 'jpy',
     nickname: 'yenes japonés',
+    image: require('../assets/flags/jpy.png'),
     symbol: '¥'
   },
 ]

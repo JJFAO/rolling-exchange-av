@@ -10,6 +10,11 @@ export const getCurrencyNickname = (flag) => {
   return nickname
 }
 
+export const getCurrencyImage = (flag) => {
+  const { image } = currencies.find((cur) => cur.flag === flag)
+  return image
+}
+
 const exchange = {
   ars: {
     ars: (amount, rate) => amount * 1,

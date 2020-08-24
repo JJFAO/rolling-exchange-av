@@ -35,8 +35,6 @@ export default function App() {
   const [ mainVisible, setMainVisible ] = useState(true)
   const [ fromCurrency, setFromCurrency ] = useState('usd')
   const [ amount, setAmount ] = useState('')
-  const [ favoriteCurrencies, setFavoriteCurrencies ] = useState([])
-  const [ allCurrencies, setAllCurrencies ] = useState(defaultCurrencies)
   const [ deviceCurrencies, setDeviceCurrencies ] = useState([])
   const [ filteredCurrencies, setFilteredCurrencies ] = useState([])
   const [ appTheme, setAppTheme ] = useState(defaultTheme)
@@ -109,15 +107,11 @@ export default function App() {
     })
   }
 
-  const addFavoriteCurrency = newCurrency => {
-    setFavoriteCurrencies( prevState => [...prevState, newCurrency] )
-  }
-
   const updateCurrency = async ( name, isFavorite ) => {
-    let temp_allCurrencies = deviceCurrencies
-    const objIndex = allCurrencies.findIndex((obj => obj.name === name))
+    let temp_allCurrencies = [...deviceCurrencies]
+    const objIndex = temp_allCurrencies.findIndex((obj => obj.name === name))
     temp_allCurrencies[objIndex].isFavorite = !isFavorite
-    setAllCurrencies(temp_allCurrencies)
+    setDeviceCurrencies(temp_allCurrencies)
     AsyncStorage.setItem(FAV_CURRENCIES, JSON.stringify(temp_allCurrencies))
   }
 
@@ -167,7 +161,6 @@ export default function App() {
               <FavoritesContainer
                 appTheme={appTheme}
                 allCurrencies={filteredCurrencies}
-                addFavoriteCurrency={addFavoriteCurrency}
                 updateCurrency={updateCurrency}
               />
             </Fragment>

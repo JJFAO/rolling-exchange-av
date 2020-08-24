@@ -8,7 +8,6 @@ const bgDark = require('../../../assets/descarga.jpg')
 const FavoritesContainer = ({
   appTheme,
   allCurrencies,
-  addFavoriteCurrency,
   updateCurrency
 }) => {
   const styles = getStyle(appTheme)
@@ -26,7 +25,6 @@ const FavoritesContainer = ({
             flag={curr.flag}
             isFavorite={curr.isFavorite}
             updateCurrency={updateCurrency}
-            addFavoriteCurrency={addFavoriteCurrency}
           />
         )}
       </ScrollView>
