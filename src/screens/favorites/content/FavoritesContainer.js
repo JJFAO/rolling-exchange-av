@@ -5,11 +5,7 @@ import FavoriteCard from './FavoriteCard';
 const bgLight = require('../../../assets/descarga-light.jpg')
 const bgDark = require('../../../assets/descarga.jpg')
 
-const FavoritesContainer = ({
-  appTheme,
-  allCurrencies,
-  updateCurrency
-}) => {
+const FavoritesContainer = ({ appTheme, allCurrencies, updateCurrency }) => {
   const styles = getStyle(appTheme)
   const bgImage = appTheme.name === 'darkTheme' ? bgDark : bgLight
 
@@ -21,10 +17,8 @@ const FavoritesContainer = ({
           <FavoriteCard
             key={curr.name}
             appTheme={appTheme}
-            name={curr.name}
-            flag={curr.flag}
-            isFavorite={curr.isFavorite}
             updateCurrency={updateCurrency}
+            currency={curr}
           />
         )}
       </ScrollView>

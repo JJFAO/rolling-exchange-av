@@ -8,32 +8,21 @@ import CurrenciesContainer from './src/screens/currencies/content/CurrenciesCont
 import CurrenciesBottom from './src/screens/currencies/CurrenciesBottom'
 import FavoritesTop from './src/screens/favorites/FavoritesTop'
 import FavoritesContainer from './src/screens/favorites/content/FavoritesContainer'
-import { currencies, initialRates } from './src/constants/currencies'
+import { currencies } from './src/constants/currencies'
 
 import { darkTheme } from './src/constants/colors'
 import { lightTheme } from './src/constants/colors'
 
 const windowHeigh = Dimensions.get('window').height
-
+const defaultTheme = darkTheme
+const defaultCurrencies = currencies.map(curr => ({ ...curr, isFavorite: false }))
 const THEME = '@theme'
 const FAV_CURRENCIES = '@favCurrencies'
+const FROM_CURRENCY = '@fromCurrency'
 
 export default function App() {
-  const defaultTheme = darkTheme
-  const defaultCurrencies = currencies.map(curr => ({ ...curr, isFavorite: false }))
-  
-  const getTheme = async () => {
-    const theme = await AsyncStorage.getItem(THEME)
-    return theme !== null ? JSON.parse(theme) : defaultTheme
-  }
-  const getDeviceCurrencies = async () => {
-    const currencies = await AsyncStorage.getItem(FAV_CURRENCIES)
-    return currencies !== null ? JSON.parse(currencies) : defaultCurrencies
-  }
-
-  const [ lastRates, setLastRates ] = useState(initialRates)
   const [ mainVisible, setMainVisible ] = useState(true)
-  const [ fromCurrency, setFromCurrency ] = useState('usd')
+  const [ fromCurrency, setFromCurrency ] = useState({})
   const [ amount, setAmount ] = useState('')
   const [ deviceCurrencies, setDeviceCurrencies ] = useState([])
   const [ filteredCurrencies, setFilteredCurrencies ] = useState([])
@@ -42,7 +31,22 @@ export default function App() {
   useEffect(() => {
     getTheme().then(setAppTheme).catch(setAppTheme(defaultTheme))
     getDeviceCurrencies().then(setDeviceCurrencies).catch(setDeviceCurrencies(defaultCurrencies))
+    getFromCurrency().then(setFromCurrency).catch(setFromCurrency(defaultCurrencies[1]))
   }, [])
+  
+  const styles = getStyle(appTheme)
+  const getTheme = async () => {
+    const theme = await AsyncStorage.getItem(THEME)
+    return theme !== null ? JSON.parse(theme) : defaultTheme
+  }
+  const getDeviceCurrencies = async () => {
+    const currencies = await AsyncStorage.getItem(FAV_CURRENCIES)
+    return currencies !== null ? JSON.parse(currencies) : defaultCurrencies
+  }
+  const getFromCurrency = async () => {
+    const currency = await AsyncStorage.getItem(FROM_CURRENCY)
+    return currency !== null ? JSON.parse(currency) : defaultCurrencies[1]
+  }
 
   const clearAppData = async () => {
     try {
@@ -68,7 +72,6 @@ export default function App() {
     } else {
       resultCurrencies = deviceCurrencies
     }
-
     updateList(resultCurrencies, term)
   }
 
@@ -95,12 +98,18 @@ export default function App() {
     }
   }
 
-  const styles = getStyle(appTheme)
   const updateRates = () => {
-    fetch(`https://api.exchangerate.host/latest?base=${fromCurrency}`)
+    fetch(`https://api.exchangerate.host/latest?base=${fromCurrency.flag}`)
     .then(res => res.json())
     .then(responseJson => {
-      setLastRates({...responseJson, hour: moment().format('H:mm')})
+      const rateInfo = {...responseJson, hour: moment().format('H:mm')}
+      let temp_allCurrencies = [...deviceCurrencies]
+      const index = temp_allCurrencies.findIndex((cur => cur.name === fromCurrency.name))
+      temp_allCurrencies[index].rateInfo = rateInfo
+      setDeviceCurrencies(temp_allCurrencies)
+      AsyncStorage.setItem(FAV_CURRENCIES, JSON.stringify(temp_allCurrencies))
+      AsyncStorage.setItem(FROM_CURRENCY, JSON.stringify({ ...fromCurrency, rateInfo }))
+      setFromCurrency({ ...fromCurrency, rateInfo })
     })
     .catch(e => {
       console.log('error: ', e)
@@ -109,8 +118,8 @@ export default function App() {
 
   const updateCurrency = async ( name, isFavorite ) => {
     let temp_allCurrencies = [...deviceCurrencies]
-    const objIndex = temp_allCurrencies.findIndex((obj => obj.name === name))
-    temp_allCurrencies[objIndex].isFavorite = !isFavorite
+    const index = temp_allCurrencies.findIndex((obj => obj.name === name))
+    temp_allCurrencies[index].isFavorite = !isFavorite
     setDeviceCurrencies(temp_allCurrencies)
     AsyncStorage.setItem(FAV_CURRENCIES, JSON.stringify(temp_allCurrencies))
   }
@@ -129,6 +138,7 @@ export default function App() {
                 appTheme={appTheme}
                 fromCurrency={fromCurrency}
                 setFromCurrency={setFromCurrency}
+                allCurrencies={deviceCurrencies}
                 amount={amount}
                 setAmount={setAmount}
                 updateRates={updateRates}
@@ -139,13 +149,12 @@ export default function App() {
                 amount={amount}
                 changeScreen={setMainVisible}
                 allCurrencies={deviceCurrencies}
-                lastRates={lastRates}
               />
               <CurrenciesBottom
                 appTheme={appTheme}
                 updateTheme={updateTheme}
                 updateRates={updateRates}
-                lastRates={lastRates}
+                lastRates={fromCurrency.rateInfo}
                 clearAppData={clearAppData}
               />
             </Fragment>

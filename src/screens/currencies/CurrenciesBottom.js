@@ -7,18 +7,22 @@ import { Button } from 'react-native-paper'
 const CurrenciesBottom = ({ appTheme, updateTheme, updateRates, lastRates, clearAppData }) => {
   const styles = getStyle(appTheme)
 
-  return(
+  return (
     <View style={styles.bottomContainer}>
       <Button
         color={appTheme.link}
         icon="update"
         style={styles.button}
         onPress={updateRates}
-        // onPress={clearAppData}
+      // onPress={clearAppData}
       />
       <View>
         <Text style={styles.updateText}>Ultima actualización</Text>
-        <Text style={styles.updateText}>{moment(lastRates.date).locale('es').format('LL')}   -   {lastRates.hour}</Text>
+        {lastRates &&
+          <Text style={styles.updateText}>
+            {moment(lastRates.date).locale('es').format('LL')}   -   {lastRates.hour}
+          </Text>
+        }
       </View>
       <Button
         color={appTheme.link}
@@ -48,6 +52,6 @@ const getStyle = theme => (
       paddingLeft: 15,
     }
   })
-) 
+)
 
 export default CurrenciesBottom

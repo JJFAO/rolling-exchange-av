@@ -1,27 +1,17 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
-import { Button, ActivityIndicator, Colors } from 'react-native-paper'
+import { Button, ActivityIndicator } from 'react-native-paper'
 import {
   useFonts,
   Karla_400Regular,
 } from "@expo-google-fonts/dev";
 
-import flags from '../../../constants/flags'
-import { getCurrencyNickname } from '../../../utils/currencyFunctions'
-
-const FavoriteCard = ({
-  appTheme,
-  name,
-  flag,
-  isFavorite,
-  updateCurrency,
-}) => {
+const FavoriteCard = ({ appTheme, updateCurrency, currency }) => {
   let [fontsLoaded] = useFonts({
     Karla_400Regular,
   });
   const styles = getStyle(appTheme)
-
-  const url = flags[flag]
+  const { name, image, nickname, isFavorite } = currency
 
   const onTouchStar = () => {
     updateCurrency(name, isFavorite)
@@ -31,14 +21,14 @@ const FavoriteCard = ({
     <View style={styles.card}>
       <View style={styles.leftContainer}>
         <Image
-          source={url}
+          source={image}
           style={{ width: 50, height: 50, marginRight: 10 }}
         />
         <View>
           <Text style={styles.text}>
             {name}
           </Text>
-          <Text style={styles.text}>{getCurrencyNickname(flag)}</Text>
+          <Text style={styles.text}>{nickname}</Text>
         </View>
       </View>
 

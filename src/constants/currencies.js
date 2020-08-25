@@ -1,9 +1,12 @@
+import { initials } from './initialRates'
+
 const currencies = [
   {
     name: 'ARS',
     flag: 'ars',
     nickname: 'pesos argentinos',
     image: require('../assets/flags/ars.png'),
+    rateInfo: initials['ARS'],
     symbol: '$'
   },
   {
@@ -11,6 +14,7 @@ const currencies = [
     flag: 'usd',
     nickname: 'dolares americanos',
     image: require('../assets/flags/usd.png'),
+    rateInfo: initials['USD'],
     symbol: 'u$s'
   },
   {
@@ -18,6 +22,7 @@ const currencies = [
     flag: 'eur',
     nickname: 'euros',
     image: require('../assets/flags/eur.png'),
+    rateInfo: initials['EUR'],
     symbol: '€'
   },
   {
@@ -25,6 +30,7 @@ const currencies = [
     flag: 'jpy',
     nickname: 'yenes japonés',
     image: require('../assets/flags/jpy.png'),
+    rateInfo: initials['JPY'],
     symbol: '¥'
   },
 ]

@@ -14,7 +14,8 @@ export const darkTheme = {
 
 export const lightTheme = {
   name: 'lightTheme',
-  primary: '#ebebeb',
+  // primary: '#ebebeb',
+  primary: '#c3d5e6',
   opacity: '#f2f5ffcc',
   secondary: '#171921',
   // container: '#FFFFFF',

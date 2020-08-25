@@ -6,7 +6,7 @@ import CurrencyCard from './CurrencyCard';
 const bgLight = require('../../../assets/descarga-light.jpg')
 const bgDark = require('../../../assets/descarga.jpg')
 
-const CurrenciesContainer = ({ appTheme, changeScreen, fromCurrency, amount, allCurrencies, lastRates }) => {
+const CurrenciesContainer = ({ appTheme, changeScreen, fromCurrency, amount, allCurrencies }) => {
   const styles = getStyle(appTheme)
   const bgImage =  appTheme.name === 'darkTheme' ? bgDark : bgLight
 
@@ -23,9 +23,7 @@ const CurrenciesContainer = ({ appTheme, changeScreen, fromCurrency, amount, all
               appTheme={appTheme}
               fromCurrency={fromCurrency}
               amount={amount}
-              name={fav.name}
-              flag={fav.flag}
-              lastRates={lastRates}
+              currency={fav}
             />
           )
         }

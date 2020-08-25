@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
-import { getCurrencyImage } from '../../utils/currencyFunctions'
-import { currencies } from '../../constants/currencies'
+import AsyncStorage from '@react-native-community/async-storage'
 
-const CurrenciesTop = ({ appTheme, fromCurrency, setFromCurrency, amount, setAmount, updateRates }) => {
+const FROM_CURRENCY = '@fromCurrency'
+
+const CurrenciesTop = ({ appTheme, fromCurrency, setFromCurrency, amount, setAmount, allCurrencies }) => {
   const [showSelection, setShowSelection] = useState(false)
   const styles = getStyle(appTheme)
 
@@ -14,8 +15,8 @@ const CurrenciesTop = ({ appTheme, fromCurrency, setFromCurrency, amount, setAmo
   
   const onHandleSelectCurrency = currency => {
     setFromCurrency(currency)
+    AsyncStorage.setItem(FROM_CURRENCY, JSON.stringify(currency))
     setShowSelection(!showSelection)
-    updateRates()
   }
 
   return (
@@ -25,13 +26,13 @@ const CurrenciesTop = ({ appTheme, fromCurrency, setFromCurrency, amount, setAmo
           <TouchableOpacity style={styles.fromCurrencyButton} onPress={onHandleShowSelection}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image
-                source={getCurrencyImage(fromCurrency)}
+                source={fromCurrency.image}
                 style={{ width: 40, height: 40 }}
               />
               {/* <Button icon={'swap-vertical-bold'} color={appTheme.link} style={{minWidth: 20}}></Button> */}
               <Text style={styles.fromCurrencyName}> ⇅</Text>
             </View>
-            <Text style={styles.fromCurrencySelectedName}>{fromCurrency.toUpperCase()}</Text>
+            <Text style={styles.fromCurrencySelectedName}>{fromCurrency.name}</Text>
           </TouchableOpacity>
         </View>
 
@@ -55,9 +56,9 @@ const CurrenciesTop = ({ appTheme, fromCurrency, setFromCurrency, amount, setAmo
           <Text style={styles.selectionText}>Seleccioná una moneda</Text>
           <View style={styles.selectionCurrencies}>
             {
-              currencies.map((cur) => (
+              allCurrencies.map((cur) => (
                 <View style={styles.selectionCurrencyButton} key={cur.name}>
-                  <TouchableOpacity onPress={() => onHandleSelectCurrency(cur.flag)}>
+                  <TouchableOpacity onPress={() => onHandleSelectCurrency(cur)}>
                     <Image
                       source={cur.image}
                       style={{ width: 50, height: 50 }}
