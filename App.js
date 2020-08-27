@@ -11,27 +11,27 @@ import { currencies } from './src/constants/currencies'
 import { darkTheme } from './src/constants/colors'
 import { lightTheme } from './src/constants/colors'
 import {
-  AsyncStorageServices, getMatchedCurrencies,
-  fetchExchangeRate, getUpdatedCurrencies, updateIsFavorite
+  AsyncStorageServices, getMatchedCurrencies, fetchExchangeRate,
+  getUpdatedCurrencies, updateIsFavorite, updateRateInfo, getFromCurrency
 } from './src/utils/helper'
 
-const { getTheme, getDeviceCurrencies, getFromCurrency } = AsyncStorageServices
+const { getTheme, getDeviceCurrencies, getFromCurrencyFlag } = AsyncStorageServices
 const windowHeigh = Dimensions.get('window').height
 const defaultTheme = darkTheme
 const defaultCurrencies = currencies.map(curr => ({ ...curr, isFavorite: false }))
 
 export default function App() {
   const [mainVisible, setMainVisible] = useState(true)
-  const [fromCurrency, setFromCurrency] = useState({})
+  const [fromCurrencyFlag, setFromCurrencyFlag] = useState('usd')
   const [amount, setAmount] = useState('')
-  const [deviceCurrencies, setDeviceCurrencies] = useState([])
+  const [deviceCurrencies, setDeviceCurrencies] = useState(defaultCurrencies)
   const [filteredCurrencies, setFilteredCurrencies] = useState([])
   const [appTheme, setAppTheme] = useState(defaultTheme)
 
   useEffect(() => {
     getTheme().then(setAppTheme).catch(setAppTheme(defaultTheme))
     getDeviceCurrencies().then(setDeviceCurrencies).catch(setDeviceCurrencies(defaultCurrencies))
-    getFromCurrency().then(setFromCurrency).catch(setFromCurrency(defaultCurrencies[1]))
+    getFromCurrencyFlag().then(setFromCurrencyFlag).catch(setFromCurrencyFlag('usd'))
   }, [])
 
   const styles = getStyle(appTheme)
@@ -48,12 +48,10 @@ export default function App() {
   }
 
   const updateRates = async () => {
-    const rateInfo = await fetchExchangeRate(fromCurrency.flag)
-    const updatedCurrency = { ...fromCurrency, rateInfo }
+    const rateInfo = await fetchExchangeRate(fromCurrencyFlag)
+    const updatedCurrency = updateRateInfo(fromCurrencyFlag, rateInfo, deviceCurrencies)
     const updatedCurrencies = getUpdatedCurrencies(updatedCurrency, deviceCurrencies)
-    setFromCurrency(updatedCurrency)
     setDeviceCurrencies(updatedCurrencies)
-    AsyncStorageServices.saveFromCurrency(updatedCurrency)
     AsyncStorageServices.saveCurrencies(updatedCurrencies)
   }
 
@@ -64,12 +62,14 @@ export default function App() {
     AsyncStorageServices.saveCurrencies(updatedCurrencies)
   }
 
+  const fromCurrency = getFromCurrency(fromCurrencyFlag, deviceCurrencies)
+
   const MainScreen = (
     <Fragment>
       <CurrenciesTop
         appTheme={appTheme}
         fromCurrency={fromCurrency}
-        setFromCurrency={setFromCurrency}
+        setFromCurrencyFlag={setFromCurrencyFlag}
         allCurrencies={deviceCurrencies}
         amount={amount}
         setAmount={setAmount}
@@ -97,6 +97,7 @@ export default function App() {
         appTheme={appTheme}
         changeScreen={setMainVisible}
         searchCurrency={searchCurrency}
+        allCurrencies={deviceCurrencies}
       />
       <FavoritesContainer
         appTheme={appTheme}

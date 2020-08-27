@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 
-const FavoritesTop = ({ appTheme, changeScreen, searchCurrency }) => {
+const FavoritesTop = ({ appTheme, changeScreen, searchCurrency, allCurrencies }) => {
   const styles = getStyle(appTheme)
   const [ input, setInput ] = useState('')
 
   useEffect(
     () => searchCurrency(input)
-    , [input]
+    , [input, allCurrencies]
   )
 
   return(

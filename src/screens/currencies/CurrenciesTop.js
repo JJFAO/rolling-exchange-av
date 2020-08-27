@@ -5,7 +5,8 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 const FROM_CURRENCY = '@fromCurrency'
 
-const CurrenciesTop = ({ appTheme, fromCurrency, setFromCurrency, amount, setAmount, allCurrencies }) => {
+const CurrenciesTop = (props) => {
+  const { appTheme, fromCurrency, setFromCurrencyFlag, amount, setAmount, allCurrencies } = props
   const [showSelection, setShowSelection] = useState(false)
   const styles = getStyle(appTheme)
 
@@ -13,9 +14,9 @@ const CurrenciesTop = ({ appTheme, fromCurrency, setFromCurrency, amount, setAmo
     setShowSelection(!showSelection)
   }
   
-  const onHandleSelectCurrency = currency => {
-    setFromCurrency(currency)
-    AsyncStorage.setItem(FROM_CURRENCY, JSON.stringify(currency))
+  const onHandleSelectCurrency = flag => {
+    setFromCurrencyFlag(flag)
+    AsyncStorage.setItem(FROM_CURRENCY, JSON.stringify(flag))
     setShowSelection(!showSelection)
   }
 
@@ -58,7 +59,7 @@ const CurrenciesTop = ({ appTheme, fromCurrency, setFromCurrency, amount, setAmo
             {
               allCurrencies.map((cur) => (
                 <View style={styles.selectionCurrencyButton} key={cur.name}>
-                  <TouchableOpacity onPress={() => onHandleSelectCurrency(cur)}>
+                  <TouchableOpacity onPress={() => onHandleSelectCurrency(cur.flag)}>
                     <Image
                       source={cur.image}
                       style={{ width: 50, height: 50 }}

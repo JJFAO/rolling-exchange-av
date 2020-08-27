@@ -19,9 +19,9 @@ export const AsyncStorageServices = {
         const currencies = await AsyncStorage.getItem(FAV_CURRENCIES)
         return currencies !== null ? JSON.parse(currencies) : defaultCurrencies
     },
-    async getFromCurrency() {
+    async getFromCurrencyFlag() {
         const currency = await AsyncStorage.getItem(FROM_CURRENCY)
-        return currency ? JSON.parse(currency) : defaultCurrencies[1]
+        return currency ? JSON.parse(currency) : 'usd'
     },
     async saveTheme(theme) {
         try {
@@ -77,7 +77,7 @@ export const fetchExchangeRate = (flag) => (
     fetch(`https://api.exchangerate.host/latest?base=${flag}`)
         .then(res => res.json())
         .then(responseJson => (
-            { ...responseJson, hour: moment().format('H:mm') }
+            { ...responseJson, date: moment().format('YYYY-MM-DD'), hour: moment().format('H:mm') }
         ))
         .catch(e => {
             console.log('error: ', e)
@@ -88,3 +88,12 @@ export const updateIsFavorite = (name, currencies) => {
     const currency = currencies.find((cur) => cur.name === name)
     return { ...currency, isFavorite: !currency.isFavorite }
 }
+
+export const updateRateInfo = (flag, rateInfo, currencies) => {
+    const currency = currencies.find((cur) => cur.flag === flag)
+    return { ...currency, rateInfo }
+}
+
+export const getFromCurrency = (flag, currencies) => (
+    currencies.find((cur) => cur.flag === flag)
+)
