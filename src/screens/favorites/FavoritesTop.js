@@ -17,13 +17,15 @@ const FavoritesTop = ({ appTheme, changeScreen, searchCurrency, allCurrencies })
         onPress={() => changeScreen(true)}
         color={appTheme.link}
         icon="arrow-left-circle"
+        style={{marginLeft: 8}}
       />
       <TextInput
         style={styles.input}
         label="¿Qué moneda estás buscando?"
         value={input}
-        onChangeText={input => setInput(input)}
-      />
+        onChangeText={setInput}
+        maxLength={15}
+        />
     </View>
   )
 }
@@ -31,7 +33,8 @@ const FavoritesTop = ({ appTheme, changeScreen, searchCurrency, allCurrencies })
 const getStyle = theme => (
   StyleSheet.create({
     favoritesSearchbar: {
-      flex: 1.6,
+      paddingTop: 24,
+      paddingBottom: 24,
       alignItems: 'center',
       justifyContent: 'center',
       flexDirection: 'row',
@@ -40,8 +43,8 @@ const getStyle = theme => (
     },
     input: {
       width: '60%',
-      paddingBottom: 10,
-      height: 60
+      padding: 5,
+      height: 60,
     }
   })
 )

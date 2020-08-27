@@ -13,12 +13,16 @@ const CurrenciesTop = (props) => {
   const onHandleShowSelection = () => {
     setShowSelection(!showSelection)
   }
-  
+
   const onHandleSelectCurrency = flag => {
     setFromCurrencyFlag(flag)
     AsyncStorage.setItem(FROM_CURRENCY, JSON.stringify(flag))
     setShowSelection(!showSelection)
   }
+
+  const handleChange = input => (
+    input.length < 15 && setAmount(input)
+  )
 
   return (
     <>
@@ -42,13 +46,15 @@ const CurrenciesTop = (props) => {
           keyboardType='numeric'
           label="¿Cuanto querés convertir?"
           value={amount}
-          onChangeText={input => setAmount(input)}
+          onChangeText={handleChange}
         />
-        {
-          amount !== '' ?
-            <Button onPress={() => setAmount('')} icon='close' color={appTheme.link} />
-            :
-            <View style={{ width: 65 }} />
+        {!!amount &&
+          <Button
+            icon='close'
+            onPress={() => setAmount('')}
+            style={styles.close}
+            color={appTheme.link}
+          />
         }
       </View>
       {
@@ -79,22 +85,24 @@ const CurrenciesTop = (props) => {
 const getStyle = theme => (
   StyleSheet.create({
     topContainer: {
-      flex: 1.6,
+      paddingTop: 24,
+      paddingBottom: 24,
       alignItems: 'center',
       justifyContent: 'center',
       flexDirection: 'row',
       width: '100%',
       backgroundColor: theme.primary,
+      position: 'relative'
     },
     input: {
       width: '60%',
-      paddingBottom: 10,
-      height: 60
+      padding: 5,
+      height: 60,
+      marginRight: 10,
     },
     fromCurrency: {
       width: '20%',
       padding: 5,
-      // height: 60,
       marginRight: 1,
       backgroundColor: theme.opacity,
       alignItems: 'center',
@@ -138,10 +146,14 @@ const getStyle = theme => (
     fromCurrencyButton: {
       alignItems: 'center',
       justifyContent: 'center',
-      // flexDirection: 'row',
       width: '100%',
-      // height: 60,
-    }
+    },
+    close: {
+      position: 'absolute',
+      right: -5,
+      minWidth: 0,
+      width: 44
+    },
   })
 )
 
