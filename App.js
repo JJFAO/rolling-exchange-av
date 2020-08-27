@@ -48,8 +48,8 @@ export default function App() {
   }
 
   const updateRates = async () => {
-    const BRL = await fetchExchangeRate('BRL')
-    console.log({ BRL })
+    // const BRL = await fetchExchangeRate('BRL')
+    // console.log({ BRL })
     const rateInfo = await fetchExchangeRate(fromCurrencyFlag)
     const updatedCurrency = updateRateInfo(fromCurrencyFlag, rateInfo, deviceCurrencies)
     const updatedCurrencies = getUpdatedCurrencies(updatedCurrency, deviceCurrencies)
@@ -111,7 +111,7 @@ export default function App() {
 
   return (
     <PaperProvider>
-      <View style={{ minHeight: windowHeigh }}>
+      <View style={{ minHeight: windowHeigh, flexGrow: 1, flexDirection: 'column' }}>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
 
