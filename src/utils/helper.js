@@ -21,7 +21,7 @@ export const AsyncStorageServices = {
     },
     async getFromCurrency() {
         const currency = await AsyncStorage.getItem(FROM_CURRENCY)
-        return currency !== null ? JSON.parse(currency) : defaultCurrencies[1]
+        return currency ? JSON.parse(currency) : defaultCurrencies[1]
     },
     async saveTheme(theme) {
         try {
@@ -31,12 +31,10 @@ export const AsyncStorageServices = {
             console.log(e)
         }
     },
-    async saveCurrencies(currencies, fromCurrency) {
+    async saveCurrencies(currencies) {
         try {
             const currenciesJson = JSON.stringify(currencies)
-            const fromCurrencyJson = JSON.stringify(fromCurrency)
             AsyncStorage.setItem(FAV_CURRENCIES, currenciesJson)
-            AsyncStorage.setItem(FROM_CURRENCY, fromCurrencyJson)
         } catch (e) {
             console.log(e)
         }
@@ -86,3 +84,7 @@ export const fetchExchangeRate = (flag) => (
         })
 )
 
+export const updateIsFavorite = (name, currencies) => {
+    const currency = currencies.find((cur) => cur.name === name)
+    return { ...currency, isFavorite: !currency.isFavorite }
+}

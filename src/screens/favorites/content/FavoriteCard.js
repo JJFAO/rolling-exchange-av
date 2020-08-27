@@ -14,7 +14,7 @@ const FavoriteCard = ({ appTheme, updateCurrency, currency }) => {
   const { name, image, nickname, isFavorite } = currency
 
   const onTouchStar = () => {
-    updateCurrency(name, isFavorite)
+    updateCurrency(name)
   }
 
   return (!fontsLoaded ? <ActivityIndicator animating={true} color={appTheme.link} /> : 

@@ -12,7 +12,7 @@ import { darkTheme } from './src/constants/colors'
 import { lightTheme } from './src/constants/colors'
 import {
   AsyncStorageServices, getMatchedCurrencies,
-  fetchExchangeRate, getUpdatedCurrencies
+  fetchExchangeRate, getUpdatedCurrencies, updateIsFavorite
 } from './src/utils/helper'
 
 const { getTheme, getDeviceCurrencies, getFromCurrency } = AsyncStorageServices
@@ -57,8 +57,8 @@ export default function App() {
     AsyncStorageServices.saveCurrencies(updatedCurrencies)
   }
 
-  const updateCurrency = async (name, isFavorite) => {
-    const updatedCurrency = { ...fromCurrency, isFavorite: !isFavorite }
+  const updateCurrency = async (name) => {
+    const updatedCurrency = updateIsFavorite(name, deviceCurrencies)
     const updatedCurrencies = getUpdatedCurrencies(updatedCurrency, deviceCurrencies)
     setDeviceCurrencies(updatedCurrencies)
     AsyncStorageServices.saveCurrencies(updatedCurrencies)
