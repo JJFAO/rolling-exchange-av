@@ -1,25 +1,24 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import moment from 'moment'
 import { StyleSheet, View, StatusBar, Platform, Dimensions } from 'react-native'
-import AsyncStorage from '@react-native-community/async-storage'
 import { Provider as PaperProvider } from 'react-native-paper'
+
 import CurrenciesTop from './src/screens/currencies/CurrenciesTop'
 import CurrenciesContainer from './src/screens/currencies/content/CurrenciesContainer'
 import CurrenciesBottom from './src/screens/currencies/CurrenciesBottom'
 import FavoritesTop from './src/screens/favorites/FavoritesTop'
 import FavoritesContainer from './src/screens/favorites/content/FavoritesContainer'
 import { currencies } from './src/constants/currencies'
-import { AsyncStorageServices, getMatchedCurrencies, getMatchedCurrencies2 } from './src/utils/helper';
-const { getTheme, getDeviceCurrencies, getFromCurrency, setLocalTheme } = AsyncStorageServices
-
 import { darkTheme } from './src/constants/colors'
 import { lightTheme } from './src/constants/colors'
+import {
+  AsyncStorageServices, getMatchedCurrencies,
+  fetchExchangeRate, getUpdatedCurrencies
+} from './src/utils/helper'
 
+const { getTheme, getDeviceCurrencies, getFromCurrency } = AsyncStorageServices
 const windowHeigh = Dimensions.get('window').height
 const defaultTheme = darkTheme
 const defaultCurrencies = currencies.map(curr => ({ ...curr, isFavorite: false }))
-const FAV_CURRENCIES = '@favCurrencies'
-const FROM_CURRENCY = '@fromCurrency'
 
 export default function App() {
   const [mainVisible, setMainVisible] = useState(true)
@@ -45,36 +44,27 @@ export default function App() {
   const updateTheme = async () => {
     const theme = (appTheme.name === 'darkTheme') ? lightTheme : darkTheme
     setAppTheme(theme)
-    setLocalTheme(theme)
+    AsyncStorageServices.saveTheme(theme)
   }
 
-  const updateRates = () => {
-    fetch(`https://api.exchangerate.host/latest?base=${fromCurrency.flag}`)
-      .then(res => res.json())
-      .then(responseJson => {
-        const rateInfo = { ...responseJson, hour: moment().format('H:mm') }
-        let temp_allCurrencies = [...deviceCurrencies]
-        const index = temp_allCurrencies.findIndex((cur => cur.name === fromCurrency.name))
-        temp_allCurrencies[index].rateInfo = rateInfo
-        setDeviceCurrencies(temp_allCurrencies)
-        AsyncStorage.setItem(FAV_CURRENCIES, JSON.stringify(temp_allCurrencies))
-        AsyncStorage.setItem(FROM_CURRENCY, JSON.stringify({ ...fromCurrency, rateInfo }))
-        setFromCurrency({ ...fromCurrency, rateInfo })
-      })
-      .catch(e => {
-        console.log('error: ', e)
-      })
+  const updateRates = async () => {
+    const rateInfo = await fetchExchangeRate(fromCurrency.flag)
+    const updatedCurrency = { ...fromCurrency, rateInfo }
+    const updatedCurrencies = getUpdatedCurrencies(updatedCurrency, deviceCurrencies)
+    setFromCurrency(updatedCurrency)
+    setDeviceCurrencies(updatedCurrencies)
+    AsyncStorageServices.saveFromCurrency(updatedCurrency)
+    AsyncStorageServices.saveCurrencies(updatedCurrencies)
   }
 
   const updateCurrency = async (name, isFavorite) => {
-    let temp_allCurrencies = [...deviceCurrencies]
-    const index = temp_allCurrencies.findIndex((obj => obj.name === name))
-    temp_allCurrencies[index].isFavorite = !isFavorite
-    setDeviceCurrencies(temp_allCurrencies)
-    AsyncStorage.setItem(FAV_CURRENCIES, JSON.stringify(temp_allCurrencies))
+    const updatedCurrency = { ...fromCurrency, isFavorite: !isFavorite }
+    const updatedCurrencies = getUpdatedCurrencies(updatedCurrency, deviceCurrencies)
+    setDeviceCurrencies(updatedCurrencies)
+    AsyncStorageServices.saveCurrencies(updatedCurrencies)
   }
 
-  const MainScreen = () => (
+  const MainScreen = (
     <Fragment>
       <CurrenciesTop
         appTheme={appTheme}
@@ -101,7 +91,7 @@ export default function App() {
     </Fragment>
   )
 
-  const FavoritesScreen = () => (
+  const FavoritesScreen = (
     <Fragment>
       <FavoritesTop
         appTheme={appTheme}
@@ -122,10 +112,7 @@ export default function App() {
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
 
-        {(mainVisible)
-          ? <MainScreen />
-          : <FavoritesScreen />
-        }
+        {(mainVisible) ? MainScreen : FavoritesScreen}
       </View>
     </PaperProvider>
   );
