@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import AsyncStorage from '@react-native-community/async-storage'
 
@@ -61,21 +61,26 @@ const CurrenciesTop = (props) => {
         showSelection &&
         <View style={styles.selection}>
           <Text style={styles.selectionText}>Seleccioná una moneda</Text>
-          <View style={styles.selectionCurrencies}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          >
             {
               allCurrencies.map((cur) => (
-                <View style={styles.selectionCurrencyButton} key={cur.name}>
-                  <TouchableOpacity onPress={() => onHandleSelectCurrency(cur.flag)}>
-                    <Image
-                      source={cur.image}
-                      style={{ width: 50, height: 50 }}
-                    />
-                    <Text style={styles.fromCurrencyName}>{cur.name}</Text>
-                  </TouchableOpacity>
-                </View>
+                <TouchableOpacity
+                  onPress={() => onHandleSelectCurrency(cur.flag)}
+                  key={cur.name}
+                  style={styles.touchCurrency}
+                >
+                  <Image
+                    source={cur.image}
+                    style={{ width: 50, height: 50 }}
+                  />
+                  <Text style={styles.fromCurrencyName}>{cur.name}</Text>
+                </TouchableOpacity>
               ))
             }
-          </View>
+          </ScrollView>
         </View>
       }
     </>
@@ -87,7 +92,7 @@ const getStyle = theme => (
     topContainer: {
       paddingTop: 24,
       paddingBottom: 24,
-      alignItems: 'center',
+      alignItems: 'stretch',
       justifyContent: 'center',
       flexDirection: 'row',
       width: '100%',
@@ -103,6 +108,7 @@ const getStyle = theme => (
     fromCurrency: {
       width: '20%',
       padding: 5,
+      // height: 60,
       marginRight: 1,
       backgroundColor: theme.opacity,
       alignItems: 'center',
@@ -110,7 +116,7 @@ const getStyle = theme => (
     fromCurrencyName: {
       color: theme.link,
       textAlign: 'center',
-      marginTop: 3,
+      marginTop: 5,
     },
     fromCurrencySelectedName: {
       color: theme.link,
@@ -121,6 +127,7 @@ const getStyle = theme => (
     selection: {
       width: '100%',
       backgroundColor: theme.container,
+      paddingTop: 7,
     },
     selectionText: {
       color: theme.textPrimary,
@@ -128,32 +135,18 @@ const getStyle = theme => (
       marginTop: 5,
       marginBottom: 5,
     },
-    selectionCurrencies: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexDirection: 'row',
-      width: '25%',
-      width: '100%',
-      paddingBottom: 10,
-    },
-    selectionCurrencyButton: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexDirection: 'column',
-      width: '25%',
-      paddingTop: 10,
-    },
-    fromCurrencyButton: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: '100%',
-    },
     close: {
       position: 'absolute',
       right: -5,
       minWidth: 0,
       width: 44
     },
+    touchCurrency: {
+      marginTop: 5,
+      marginBottom: 10,
+      marginLeft: 17,
+      marginRight: 17,
+    }
   })
 )
 

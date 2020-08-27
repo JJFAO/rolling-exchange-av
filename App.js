@@ -48,6 +48,8 @@ export default function App() {
   }
 
   const updateRates = async () => {
+    const BRL = await fetchExchangeRate('BRL')
+    console.log({ BRL })
     const rateInfo = await fetchExchangeRate(fromCurrencyFlag)
     const updatedCurrency = updateRateInfo(fromCurrencyFlag, rateInfo, deviceCurrencies)
     const updatedCurrencies = getUpdatedCurrencies(updatedCurrency, deviceCurrencies)
@@ -123,7 +125,7 @@ const getStyle = theme => (
   StyleSheet.create({
     statusBarUnderlay: {
       height: 28,
-      backgroundColor: theme.secondary,
+      backgroundColor: theme.primary,
     }
   })
 )

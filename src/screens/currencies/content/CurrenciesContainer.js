@@ -12,10 +12,10 @@ const CurrenciesContainer = ({ appTheme, changeScreen, fromCurrency, amount, all
 
   return(
       <ImageBackground style={styles.image} source={bgImage}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
         <Button onPress={() => changeScreen(false)} style={styles.button}>
           <Text style={styles.buttonText}>Agregar nueva moneda</Text>
         </Button>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
         {
           allCurrencies.filter(curr => curr.isFavorite).map(fav =>
             <CurrencyCard
@@ -36,7 +36,7 @@ const CurrenciesContainer = ({ appTheme, changeScreen, fromCurrency, amount, all
 const getStyle = theme => (
   StyleSheet.create({
     currenciesContainer: {
-      flex: 8,
+      flex: 1,
       // backgroundColor: require('../../../assets/descarga.jpg'),
       width: '100%',
     },
@@ -47,7 +47,7 @@ const getStyle = theme => (
       color: theme.link,
     },
     image: {
-      flex: 8,
+      flex: 7,
       justifyContent: "center"
     },
   })
